@@ -1,7 +1,17 @@
+
 import { useState } from "react";
-import { Menu, Phone, Mail, X } from "lucide-react";
+import { Menu, Phone, Mail, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 interface HeaderProps {
   className?: string;
@@ -11,17 +21,25 @@ const Header = ({ className }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { name: "Home", href: "#" },
-    { name: "Buy", href: "#buy" },
-    { name: "Sell", href: "#sell" },
-    { name: "Why List With Me", href: "#why-list" },
-    { name: "Home Valuation", href: "#valuation" },
-    { name: "Communities", href: "#communities", hasDropdown: true },
-    { name: "Testimonials", href: "#testimonials" },
-    { name: "Team", href: "#team" },
-    { name: "About", href: "#about" },
-    { name: "Contact", href: "#contact" },
-    { name: "Blog", href: "#blog" },
+    { name: "Home", href: "/" },
+    { name: "Buy", href: "/buy" },
+    { name: "Sell", href: "/sell" },
+    { name: "Why List With Me", href: "/why-list" },
+    { name: "Home Valuation", href: "/valuation" },
+    { name: "Testimonials", href: "/testimonials" },
+    { name: "Team", href: "/team" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+    { name: "Blog", href: "/blog" },
+  ];
+
+  const communities = [
+    { name: "Charlotte", href: "/communities/charlotte" },
+    { name: "Fort Mill", href: "/communities/fort-mill" },
+    { name: "Rock Hill", href: "/communities/rock-hill" },
+    { name: "Marvin", href: "/communities/marvin" },
+    { name: "Matthews", href: "/communities/matthews" },
+    { name: "Waxhaw", href: "/communities/waxhaw" },
   ];
 
   return (
@@ -48,29 +66,55 @@ const Header = ({ className }: HeaderProps) => {
         <div className="flex items-center justify-between py-4">
           {/* Logo */}
           <div className="flex items-center">
-            <div className="text-2xl font-bold text-primary">
+            <Link to="/" className="text-2xl font-bold text-primary">
               Elite<span className="text-accent">Homes</span>
-            </div>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-foreground hover:text-accent transition-smooth font-medium relative group"
-              >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
-              </a>
-            ))}
-          </nav>
+          <NavigationMenu className="hidden lg:flex">
+            <NavigationMenuList>
+              {navItems.map((item) => (
+                <NavigationMenuItem key={item.name}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to={item.href}
+                      className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    >
+                      {item.name}
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
+              
+              {/* Communities Dropdown */}
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Communities</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                    {communities.map((community) => (
+                      <NavigationMenuLink key={community.name} asChild>
+                        <Link
+                          to={community.href}
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                        >
+                          <div className="text-sm font-medium leading-none">{community.name}</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                            Explore homes in {community.name}
+                          </p>
+                        </Link>
+                      </NavigationMenuLink>
+                    ))}
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
 
           {/* CTA Button & Mobile Menu */}
           <div className="flex items-center gap-4">
-            <Button variant="cta" className="hidden lg:inline-flex">
-              Get Free Consultation
+            <Button variant="cta" className="hidden lg:inline-flex" asChild>
+              <Link to="/contact">Get Free Consultation</Link>
             </Button>
             
             {/* Mobile Menu Button */}
@@ -90,17 +134,40 @@ const Header = ({ className }: HeaderProps) => {
           <div className="lg:hidden py-4 border-t animate-fade-in">
             <nav className="flex flex-col space-y-4">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.href}
                   className="text-foreground hover:text-accent transition-smooth font-medium py-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
-              <Button variant="cta" className="mt-4 w-full">
-                Get Free Consultation
+              
+              {/* Mobile Communities */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-foreground font-medium py-2">
+                  <span>Communities</span>
+                  <ChevronDown className="w-4 h-4" />
+                </div>
+                <div className="pl-4 space-y-2">
+                  {communities.map((community) => (
+                    <Link
+                      key={community.name}
+                      to={community.href}
+                      className="block text-muted-foreground hover:text-accent transition-smooth py-1"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {community.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              
+              <Button variant="cta" className="mt-4 w-full" asChild>
+                <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
+                  Get Free Consultation
+                </Link>
               </Button>
             </nav>
           </div>
