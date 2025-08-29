@@ -10,11 +10,20 @@ import Sell from "./pages/Sell";
 import WhyListWithMe from "./pages/WhyListWithMe";
 import HomeValuation from "./pages/HomeValuation";
 import Communities from "./pages/Communities";
+import CommunityDetail from "./pages/CommunityDetail";
 import Testimonials from "./pages/Testimonials";
 import Team from "./pages/Team";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail";
+import Properties from "./pages/Properties";
+import PropertyDetail from "./pages/PropertyDetail";
+import Profile from "./pages/Profile";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,14 +38,23 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/buy" element={<Buy />} />
           <Route path="/sell" element={<Sell />} />
-          <Route path="/why-list" element={<WhyListWithMe />} />
-          <Route path="/valuation" element={<HomeValuation />} />
+          <Route path="/why-list-with-me" element={<WhyListWithMe />} />
+          <Route path="/home-valuation" element={<HomeValuation />} />
           <Route path="/communities" element={<Communities />} />
+          <Route path="/communities/:slug" element={<CommunityDetail />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/team" element={<Team />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogDetail />} />
+          <Route path="/properties" element={<Properties />} />
+          <Route path="/properties/:id" element={<PropertyDetail />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/register" element={<Register />} />
+          <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+          <Route path="/auth/reset-password" element={<ResetPassword />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
